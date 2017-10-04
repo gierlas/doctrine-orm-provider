@@ -2,8 +2,8 @@
 
 namespace Kora\DataProvider\Doctrine\Orm;
 
+use Kora\DataProvider\OperatorImplementation\Filter\CallbackFilterImplementation;
 use Kora\DataProvider\OperatorImplementationsList;
-use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\CallbackFilterImplementation;
 use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\EqualFilterImplementation;
 use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Order\SingleOrderImplementation;
 use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Pager\LimitOffsetPagerImplementation;
