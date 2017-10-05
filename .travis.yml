@@ -1,13 +1,17 @@
 language: php
 
 php:
-    - 7.0
-    - 7.1
-
+  - 7.0
+  - 7.1
 sudo: false
 
 before_install:
   - composer self-update
+  - composer config -g github-oauth.github.com "$GITHUB_TOKEN"
 
 install:
   - composer update --prefer-source $COMPOSER_FLAGS
+
+env:
+  global:
+    secure: Q7zyFeX0DvV7n5cSyyvpIi5UjjMWHCGTz6a9dqhXv/b9EuVGprbP6fflvC0Ai364LB6+vXQfpEpu0Ig43KzPit8dwKVjkXdDS0/kUNvH98PLyhCqzKCNH38wqraWyoijBJ8VEKCwSL5OnXUd2qoInA7045wfUNgyMSnM/U+qISaTpQEPN2jXKeCHZDINOrWh7yfcWguZ3xWIqkIPwDWtha0YNwh76eTVXVoWzegsMP4NyxWTOWnMhmXJV0I8XsAYGGNcmP5HOka1gf8zukRA1gP5gad685+MmXkdBIgdN3vQwPhNVI8VjMV5VtO1Qwq3imLZ8o/eDvGpPFu8fCQfgwIpXPp367iLySi657Ui/gCMxgRKpoZ3SiLuI2LEOSZXuWg9N8dAkT7EObb8I59p/r6p8lvkrEEbAIr580CJtv8DFg2FTUoC3Ev9sU0X+N0ezZ6CwaTqCElo1mk6U9F+71bhqYBwfaLvcReLnpDEbIW32CPlYE7uusuUtEnGWTGSRz3gbwzsDGm1zh4RDv6s0aR1J9vnCJVMv59HQw+FtipwGjmJoggniGgTep0CH9cyiMN5DXvvmBMVVrgUaMfZgrefhCUlxsWoFyi7VoiB30EW5vJ3ivs90aZvvuFKEN7pNr2Ww3jJsi5sz1oO88m9n5TjPfA2d0mJIo2b40Cw2fI=
