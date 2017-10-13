@@ -7,7 +7,6 @@ use Kora\DataProvider\DataProviderInterface;
 use Kora\DataProvider\OperatorDefinition\Filter\EqualFilterDefinition;
 use Kora\DataProvider\OperatorDefinitionInterface;
 use Kora\DataProvider\OperatorImplementation\AbstractValueFilterImplementation;
-use Kora\DataProvider\OperatorImplementationInterface;
 
 
 /**
