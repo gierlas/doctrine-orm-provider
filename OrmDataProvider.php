@@ -22,22 +22,16 @@ class OrmDataProvider extends AbstractDataProvider
 	private $queryBuilder;
 
 	/**
-	 * @var string[]
-	 */
-	private $mappings;
-
-	/**
 	 * OrmQueryBuilder constructor.
 	 *
+	 * @param OperatorImplementationsList $implementationsList
 	 * @param QueryBuilder                $queryBuilder
 	 * @param string[]                    $mappings
-	 * @param OperatorImplementationsList $implementationsList
 	 */
-	public function __construct(QueryBuilder $queryBuilder, array $mappings = [], OperatorImplementationsList $implementationsList)
+	public function __construct(OperatorImplementationsList $implementationsList, QueryBuilder $queryBuilder, array $mappings = [])
 	{
-		parent::__construct($implementationsList);
+		parent::__construct($implementationsList, $mappings);
 		$this->queryBuilder = $queryBuilder;
-		$this->mappings = $mappings;
 	}
 
 	/**
@@ -46,7 +40,7 @@ class OrmDataProvider extends AbstractDataProvider
 	 */
 	public function getFieldMapping(string $name): string
 	{
-		if (isset($this->mappings[$name])) return $this->mappings[$name];
+		if (isset($this->mapping[$name])) return $this->mapping[$name];
 
 		$aliases = $this->queryBuilder->getAllAliases();
 

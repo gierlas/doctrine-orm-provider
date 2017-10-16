@@ -23,7 +23,7 @@ class OrmDataProviderTest extends TestCase
 	 */
 	public function testFieldMapping(QueryBuilder $queryBuilder, array $mapping, $column, $expectedMapping)
 	{
-		$dataProvider = new OrmDataProvider($queryBuilder, $mapping, new OperatorImplementationsList());
+		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, $mapping);
 
 		$columnMapping = $dataProvider->getFieldMapping($column);
 

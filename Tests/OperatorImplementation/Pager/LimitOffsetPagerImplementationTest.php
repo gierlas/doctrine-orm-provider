@@ -38,7 +38,7 @@ class LimitOffsetPagerImplementationTest extends TestCase
 			->andReturnSelf()
 			->once();
 
-		$dataProvider = new OrmDataProvider($queryBuilder, [ ], new OperatorImplementationsList());
+		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, [ ]);
 
 		$limitOffsetDefinition = new LimitOffsetPagerDefinition();
 		$limitOffsetDefinition

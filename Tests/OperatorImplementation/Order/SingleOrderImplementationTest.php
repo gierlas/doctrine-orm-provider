@@ -47,7 +47,7 @@ class SingleOrderImplementationTest extends TestCase
 		}
 
 
-		$dataProvider = new OrmDataProvider($queryBuilder, [ $orderColumn => $orderColumnMapping ], new OperatorImplementationsList());
+		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, [ $orderColumn => $orderColumnMapping ]);
 
 		$orderDefinition = new SingleOrderDefinition([$orderColumn], $orderParamName, $orderDirName);
 		$orderDefinition

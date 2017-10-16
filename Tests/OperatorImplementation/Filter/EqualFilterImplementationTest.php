@@ -50,7 +50,7 @@ class EqualFilterImplementationTest extends TestCase
 			->with($sqlParam, $paramValue)
 			->once();
 
-		$dataProvider = new OrmDataProvider($queryBuilder, [ $paramName => $paramMapping ], new OperatorImplementationsList());
+		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, [ $paramName => $paramMapping ]);
 
 		$filterDefinition = new EqualFilterDefinition($paramName, true);
 		$filterDefinition->initData([
