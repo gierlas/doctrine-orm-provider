@@ -4,6 +4,7 @@ namespace Kora\DataProvider\Doctrine\Orm\Tests;
 
 use Doctrine\ORM\QueryBuilder;
 use Kora\DataProvider\Doctrine\Orm\OrmDataProvider;
+use Kora\DataProvider\Mapper;
 use Kora\DataProvider\OperatorImplementationsList;
 use PHPUnit\Framework\TestCase;
 use Mockery as m;
@@ -23,7 +24,7 @@ class OrmDataProviderTest extends TestCase
 	 */
 	public function testFieldMapping(QueryBuilder $queryBuilder, array $mapping, $column, $expectedMapping)
 	{
-		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, $mapping);
+		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, new Mapper([], $mapping));
 
 		$columnMapping = $dataProvider->getFieldMapping($column);
 

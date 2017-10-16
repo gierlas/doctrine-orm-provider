@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\EqualFilterImplementation;
 use Kora\DataProvider\Doctrine\Orm\OrmDataProvider;
+use Kora\DataProvider\Mapper;
 use Kora\DataProvider\OperatorDefinition\Filter\EqualFilterDefinition;
 use Kora\DataProvider\OperatorImplementationsList;
 use PHPUnit\Framework\TestCase;
@@ -50,7 +51,7 @@ class EqualFilterImplementationTest extends TestCase
 			->with($sqlParam, $paramValue)
 			->once();
 
-		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, [ $paramName => $paramMapping ]);
+		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, new Mapper([], [ $paramName => $paramMapping ]));
 
 		$filterDefinition = new EqualFilterDefinition($paramName, true);
 		$filterDefinition->initData([

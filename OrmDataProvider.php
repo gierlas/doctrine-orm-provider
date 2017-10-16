@@ -7,6 +7,7 @@ use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\QueryBuilder;
 use Kora\DataProvider\AbstractDataProvider;
+use Kora\DataProvider\Mapper;
 use Kora\DataProvider\OperatorImplementationsList;
 
 
@@ -26,11 +27,11 @@ class OrmDataProvider extends AbstractDataProvider
 	 *
 	 * @param OperatorImplementationsList $implementationsList
 	 * @param QueryBuilder                $queryBuilder
-	 * @param string[]                    $mappings
+	 * @param Mapper                      $mapper
 	 */
-	public function __construct(OperatorImplementationsList $implementationsList, QueryBuilder $queryBuilder, array $mappings = [])
+	public function __construct(OperatorImplementationsList $implementationsList, QueryBuilder $queryBuilder, Mapper $mapper)
 	{
-		parent::__construct($implementationsList, $mappings);
+		parent::__construct($implementationsList, $mapper);
 		$this->queryBuilder = $queryBuilder;
 	}
 
@@ -40,7 +41,8 @@ class OrmDataProvider extends AbstractDataProvider
 	 */
 	public function getFieldMapping(string $name): string
 	{
-		if (isset($this->mapping[$name])) return $this->mapping[$name];
+		$map = $this->mapper->getOperatorFieldMap();
+		if (isset($map[$name])) return $map[$name];
 
 		$aliases = $this->queryBuilder->getAllAliases();
 

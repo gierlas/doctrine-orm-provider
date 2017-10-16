@@ -5,6 +5,7 @@ namespace Kora\DataProvider\Doctrine\Orm\Tests\OperatorImplementation\Pager;
 use Doctrine\ORM\QueryBuilder;
 use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Pager\LimitOffsetPagerImplementation;
 use Kora\DataProvider\Doctrine\Orm\OrmDataProvider;
+use Kora\DataProvider\Mapper;
 use Kora\DataProvider\OperatorDefinition\Pager\LimitOffsetPagerDefinition;
 use Kora\DataProvider\OperatorImplementationsList;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +39,7 @@ class LimitOffsetPagerImplementationTest extends TestCase
 			->andReturnSelf()
 			->once();
 
-		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, [ ]);
+		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, new Mapper());
 
 		$limitOffsetDefinition = new LimitOffsetPagerDefinition();
 		$limitOffsetDefinition

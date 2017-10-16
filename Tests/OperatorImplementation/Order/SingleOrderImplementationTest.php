@@ -5,6 +5,7 @@ namespace Kora\DataProvider\Doctrine\Orm\Tests\OperatorImplementation\Order;
 use Doctrine\ORM\QueryBuilder;
 use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Order\SingleOrderImplementation;
 use Kora\DataProvider\Doctrine\Orm\OrmDataProvider;
+use Kora\DataProvider\Mapper;
 use Kora\DataProvider\OperatorDefinition\Order\SingleOrderDefinition;
 use Kora\DataProvider\OperatorDefinition\OrderOperatorDefinitionInterface;
 use Kora\DataProvider\OperatorImplementationsList;
@@ -47,7 +48,7 @@ class SingleOrderImplementationTest extends TestCase
 		}
 
 
-		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, [ $orderColumn => $orderColumnMapping ]);
+		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, new Mapper([], [ $orderColumn => $orderColumnMapping ]));
 
 		$orderDefinition = new SingleOrderDefinition([$orderColumn], $orderParamName, $orderDirName);
 		$orderDefinition
