@@ -63,7 +63,7 @@ class DateRangeFilterImplementation implements OperatorImplementationInterface
 	 * @param \DateTime|null      $date
 	 * @param DateRangeDefinition $definition
 	 * @param bool                $isStart
-	 * @return null
+	 * @return null|\DateTime
 	 */
 	protected function prepareDate($date, DateRangeDefinition $definition, bool $isStart)
 	{
