@@ -27,10 +27,10 @@ class EqualFilterImplementationTest extends TestCase
 		$paramMapping = 'test';
 		$sqlParam = ':' . $paramName;
 
-		$expresionBuilder = m::mock(Expr::class)
+		$expressionBuilder = m::mock(Expr::class)
 			->shouldDeferMissing();
 
-		$expresionBuilder
+		$expressionBuilder
 			->shouldReceive('eq')
 			->with($sqlParam, $paramMapping);
 
@@ -39,7 +39,7 @@ class EqualFilterImplementationTest extends TestCase
 
 		$queryBuilder
 			->shouldReceive('expr')
-			->andReturn($expresionBuilder);
+			->andReturn($expressionBuilder);
 
 		$queryBuilder
 			->shouldReceive('andWhere')
