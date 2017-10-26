@@ -4,7 +4,7 @@ namespace Kora\DataProvider\Doctrine\Orm\Tests\OperatorImplementation\Filter;
 
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
-use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\RangeOperatorFilterImplementation;
+use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\RangeFilterImplementation;
 use Kora\DataProvider\Doctrine\Orm\OrmDataProvider;
 use Kora\DataProvider\Mapper;
 use Kora\DataProvider\OperatorDefinition\Filter\RangeFilterDefinition;
@@ -16,7 +16,7 @@ use Mockery as m;
  * Class RangeOperatorFilterImplementationTest
  * @author Paweł Gierlasiński <pawel@mediamonks.com>
  */
-class RangeOperatorFilterImplementationTest extends TestCase
+class RangeFilterImplementationTest extends TestCase
 {
 	use m\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
@@ -80,7 +80,7 @@ class RangeOperatorFilterImplementationTest extends TestCase
 			]
 		]);
 
-		$filterImplementation = new RangeOperatorFilterImplementation();
+		$filterImplementation = new RangeFilterImplementation();
 		$filterImplementation->apply($dataProvider, $filterDefinition);
 	}
 
@@ -126,7 +126,7 @@ class RangeOperatorFilterImplementationTest extends TestCase
 			]
 		]);
 
-		$filterImplementation = new RangeOperatorFilterImplementation();
+		$filterImplementation = new RangeFilterImplementation();
 		$filterImplementation->apply($dataProvider, $filterDefinition);
 	}
 
@@ -172,7 +172,7 @@ class RangeOperatorFilterImplementationTest extends TestCase
 			]
 		]);
 
-		$filterImplementation = new RangeOperatorFilterImplementation();
+		$filterImplementation = new RangeFilterImplementation();
 		$filterImplementation->apply($dataProvider, $filterDefinition);
 	}
 }

@@ -13,7 +13,7 @@ use Kora\DataProvider\OperatorImplementationInterface;
  * Class RangeOperatorFilterImplementation
  * @author Paweł Gierlasiński <pawel@mediamonks.com>
  */
-class RangeOperatorFilterImplementation implements OperatorImplementationInterface
+class RangeFilterImplementation implements OperatorImplementationInterface
 {
 	/**
 	 * @return string

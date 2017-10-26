@@ -2,6 +2,14 @@
 
 namespace Kora\DataProvider\Doctrine\Orm;
 
+use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\ChoiceFilterImplementation;
+use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\DateFilterImplementation;
+use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\DateRangeFilterImplementation;
+use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\RangeFilterImplementation;
+use Kora\DataProvider\OperatorDefinition\Filter\ChoiceFilterDefinition;
+use Kora\DataProvider\OperatorDefinition\Filter\DateFilterDefinition;
+use Kora\DataProvider\OperatorDefinition\Filter\DateRangeDefinition;
+use Kora\DataProvider\OperatorDefinition\Filter\RangeFilterDefinition;
 use Kora\DataProvider\OperatorImplementation\Filter\CallbackFilterImplementation;
 use Kora\DataProvider\OperatorImplementationsList;
 use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\EqualFilterImplementation;
@@ -35,6 +43,18 @@ class OrmImplementationList extends OperatorImplementationsList
 		$this
 			->addImplementation(
 				EqualFilterDefinition::class, new EqualFilterImplementation()
+			)
+			->addImplementation(
+				ChoiceFilterDefinition::class, new ChoiceFilterImplementation()
+			)
+			->addImplementation(
+				RangeFilterDefinition::class, new RangeFilterImplementation()
+			)
+			->addImplementation(
+				DateFilterDefinition::class, new DateFilterImplementation()
+			)
+			->addImplementation(
+				DateRangeDefinition::class, new DateRangeFilterImplementation()
 			)
 			->addImplementation(
 				CallbackFilterDefinition::class, new CallbackFilterImplementation()
