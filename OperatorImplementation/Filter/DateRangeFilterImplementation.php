@@ -77,7 +77,7 @@ class DateRangeFilterImplementation implements OperatorImplementationInterface
 			$retDate->setTime(0, 0);
 		}
 
-		if(!$isStart) {
+		if(!$isStart && !$definition->hasTimePart()) {
 			$retDate->modify('+1 day');
 		}
 

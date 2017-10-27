@@ -4,8 +4,11 @@ namespace Kora\DataProvider\Doctrine\Orm\Tests\OperatorImplementation\Filter;
 
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
+use Kora\DataProvider\DataProviderOperatorsSetup;
 use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\DateRangeFilterImplementation;
 use Kora\DataProvider\Doctrine\Orm\OrmDataProvider;
+use Kora\DataProvider\Doctrine\Orm\OrmImplementationList;
+use Kora\DataProvider\Doctrine\Orm\Tests\AbstractDoctrineTest;
 use Kora\DataProvider\Mapper;
 use Kora\DataProvider\OperatorDefinition\Filter\DateRangeDefinition;
 use Kora\DataProvider\OperatorImplementationsList;
@@ -16,9 +19,56 @@ use Mockery as m;
  * Class DateRangeFilterImplementationTest
  * @author Paweł Gierlasiński <pawel@mediamonks.com>
  */
-class DateRangeFilterImplementationTest extends TestCase
+class DateRangeFilterImplementationTest extends AbstractDoctrineTest
 {
 	use m\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
+
+	/**
+	 * @dataProvider resultProvider
+	 * @param $min
+	 * @param $max
+	 * @param $format
+	 * @param $hasTime
+	 * @param $expectedCount
+	 */
+	public function testResult($min, $max, $format, $hasTime, $expectedCount)
+	{
+		$em = $this->getPropagatedEM();
+		$qb = $em->createQueryBuilder()
+			->select('f')
+			->from('Test:Foo', 'f');
+
+		$setup = new DataProviderOperatorsSetup();
+		$setup
+			->addFilter((new DateRangeDefinition('createdAt', $format))->setHasTimePart($hasTime));
+
+		$setup->setData([
+			'createdAt' => [
+				'start' => $min,
+				'end' => $max
+			]
+		]);
+
+		$ormDataProvider = new OrmDataProvider(new OrmImplementationList(), clone $qb, new Mapper());
+		$data = $ormDataProvider->fetchData($setup);
+
+
+		$this->assertEquals($expectedCount, $data->getNbAll());
+		$this->assertCount($expectedCount, $data->getResults());
+	}
+
+	public function resultProvider()
+	{
+		return [
+			[null, null, 'Y-m-d', false, count(AbstractDoctrineTest::getBasicFixtures())],
+			['2017-01-23', null, 'Y-m-d', false, 3],
+			['2017-01-21', '2017-01-22', 'Y-m-d', false, 2],
+			[new \DateTime('2017-01-21'), new \DateTime('2017-01-22'), 'Y-m-d', false, 2],
+			['2017-01-28', '2017-01-29', 'Y-m-d', false, 0],
+			['2017-01-22 11:00:00', '2017-01-22 14:00:00', 'Y-m-d H:i:s', true, 1],
+		];
+	}
 
 	public function testMin()
 	{

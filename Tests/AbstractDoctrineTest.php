@@ -43,7 +43,7 @@ abstract class AbstractDoctrineTest extends TestCase
 	/**
 	 * @return array
 	 */
-	public function getBasicFixtures(): array
+	public static function getBasicFixtures(): array
 	{
 		return [
 			['Title1', 1, \DateTime::createFromFormat('H:i:s', "10:22:00"), new \DateTime('2017-01-22 10:15:00')],
@@ -60,7 +60,7 @@ abstract class AbstractDoctrineTest extends TestCase
 	 */
 	public function getPropagatedEM(array $fixtures = []): EntityManager
 	{
-		$fixtures = empty($fixtures) ? $this->getBasicFixtures() : $fixtures;
+		$fixtures = empty($fixtures) ? self::getBasicFixtures() : $fixtures;
 		$em = $this->prepareEntityManager();
 		$this->propagateData($em, $fixtures);
 
