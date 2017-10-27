@@ -2,6 +2,7 @@
 
 namespace Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter;
 
+use Doctrine\ORM\QueryBuilder;
 use Kora\DataProvider\DataProviderInterface;
 use Kora\DataProvider\Doctrine\Orm\OrmDataProvider;
 use Kora\DataProvider\OperatorDefinition\Filter\RangeFilterDefinition;
@@ -33,28 +34,18 @@ class RangeFilterImplementation implements OperatorImplementationInterface
 		 * @var OrmDataProvider $dataProvider
 		 * @var RangeFilterDefinition $definition
 		 */
-		$field = $dataProvider->getFieldMapping($definition->getName());
+		$fieldName = $dataProvider->getFieldMapping($definition->getName());
 
 		if($definition->getMin() !== null && $definition->getMax() !== null) {
-			$this->handleMinMax($field, $dataProvider, $definition);
+			$this->handleMinMax($fieldName, $dataProvider, $definition);
 			return;
 		}
 
 		$qb = $dataProvider->getQueryBuilder();
-		$param = ':' . $definition->getName();
+		$paramName = ':' . $definition->getName();
 
-		if($definition->getMin() !== null) {
-			$qb
-				->andWhere($qb->expr()->gte($field, $param))
-				->setParameter($param, $definition->getMin());
-			return;
-		}
-
-		if($definition->getMax() !== null) {
-			$qb
-				->andWhere($qb->expr()->lte($field, $param))
-				->setParameter($param, $definition->getMax());
-		}
+		$this->applyComparison($qb, $fieldName, $paramName, 'gte', $definition->getMin());
+		$this->applyComparison($qb, $fieldName, $paramName, 'lte', $definition->getMax());
 	}
 
 	/**
@@ -77,5 +68,24 @@ class RangeFilterImplementation implements OperatorImplementationInterface
 			)
 			->setParameter($paramStart, $definition->getMin())
 			->setParameter($paramEnd, $definition->getMax());
+	}
+
+
+	/**
+	 * @param QueryBuilder $qb
+	 * @param string       $fieldName
+	 * @param string       $paramName
+	 * @param string       $type
+	 * @param              $value
+	 */
+	public function applyComparison(QueryBuilder $qb, string $fieldName, string $paramName, string $type, $value)
+	{
+		if($value === null) {
+			return;
+		}
+
+		$qb
+			->andWhere($qb->expr()->{$type}($fieldName, $paramName))
+			->setParameter($paramName, $value);
 	}
 }

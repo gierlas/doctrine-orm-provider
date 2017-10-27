@@ -34,37 +34,21 @@ class DateRangeFilterImplementation implements OperatorImplementationInterface
 		 * @var OrmDataProvider     $dataProvider
 		 * @var DateRangeDefinition $definition
 		 */
-		$field = $dataProvider->getFieldMapping($definition->getName());
+		$fieldName = $dataProvider->getFieldMapping($definition->getName());
 		$dateStart = $this->prepareDate($definition->getDateStart(), $definition, true);
 		$dateEnd = $this->prepareDate($definition->getDateEnd(), $definition, false);
 
 		if ($dateStart !== null && $dateEnd !== null) {
-			$this->handleBoth($field, $dataProvider, $definition, $dateStart, $dateEnd);
+			$this->handleBoth($fieldName, $dataProvider, $definition, $dateStart, $dateEnd);
 			return;
 		}
 
 		$qb = $dataProvider->getQueryBuilder();
-		$param = ':' . $definition->getName();
+		$paramName = ':' . $definition->getName();
 
 
-		$this->applyDate($qb, $field, $param, $this->getComparisonType(true, $definition->hasTimePart()), $dateStart);
-		$this->applyDate($qb, $field, $param, $this->getComparisonType(false, $definition->hasTimePart()), $dateEnd);
-	}
-
-	protected function applyDate(QueryBuilder $qb, string $field, string $paramName, string $type, $date)
-	{
-		if($date === null) {
-			return;
-		}
-
-		$qb
-			->andWhere($qb->expr()->{$type}($field, $paramName))
-			->setParameter($paramName, $date);
-	}
-
-	protected function getComparisonType(bool $isStart, bool $hasTime)
-	{
-		return $isStart ? 'gte' : ($hasTime ? 'lte' : 'lt');
+		$this->applyDate($qb, $fieldName, $paramName, $this->getComparisonType(true, $definition->hasTimePart()), $dateStart);
+		$this->applyDate($qb, $fieldName, $paramName, $this->getComparisonType(false, $definition->hasTimePart()), $dateEnd);
 	}
 
 	/**
@@ -119,4 +103,31 @@ class DateRangeFilterImplementation implements OperatorImplementationInterface
 			->setParameter($paramEnd, $dateEnd);
 	}
 
+	/**
+	 * @param QueryBuilder $qb
+	 * @param string       $fieldName
+	 * @param string       $paramName
+	 * @param string       $type
+	 * @param              $date
+	 */
+	protected function applyDate(QueryBuilder $qb, string $fieldName, string $paramName, string $type, $date)
+	{
+		if($date === null) {
+			return;
+		}
+
+		$qb
+			->andWhere($qb->expr()->{$type}($fieldName, $paramName))
+			->setParameter($paramName, $date);
+	}
+
+	/**
+	 * @param bool $isStart
+	 * @param bool $hasTime
+	 * @return string
+	 */
+	protected function getComparisonType(bool $isStart, bool $hasTime): string 
+	{
+		return $isStart ? 'gte' : ($hasTime ? 'lte' : 'lt');
+	}
 }
