@@ -51,6 +51,7 @@ abstract class AbstractDoctrineTest extends TestCase
 			['Title2', 2, \DateTime::createFromFormat('H:i:s', "15:33:00"), new \DateTime('2017-01-23 12:15:00')],
 			['Title3', 3, \DateTime::createFromFormat('H:i:s', "17:33:00"), new \DateTime('2017-01-24 13:14:00')],
 			['Title4', 1, \DateTime::createFromFormat('H:i:s', "11:33:00"), new \DateTime('2017-01-25 11:00:00')],
+			['Title4', 5, \DateTime::createFromFormat('H:i:s', "11:33:00"), new \DateTime('2017-01-26 11:00:00')],
 		];
 	}
 

@@ -62,7 +62,8 @@ class DateRangeFilterImplementationTest extends AbstractDoctrineTest
 	{
 		return [
 			[null, null, 'Y-m-d', false, count(AbstractDoctrineTest::getBasicFixtures())],
-			['2017-01-23', null, 'Y-m-d', false, 3],
+			['2017-01-23', null, 'Y-m-d', false, 4],
+			[null, '2017-01-23', 'Y-m-d', false, 3],
 			['2017-01-21', '2017-01-22', 'Y-m-d', false, 2],
 			[new \DateTime('2017-01-21'), new \DateTime('2017-01-22'), 'Y-m-d', false, 2],
 			['2017-01-28', '2017-01-29', 'Y-m-d', false, 0],
