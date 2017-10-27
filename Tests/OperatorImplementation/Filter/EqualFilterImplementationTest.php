@@ -23,7 +23,12 @@ class EqualFilterImplementationTest extends AbstractDoctrineTest
 {
 	use m\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-	public function testResult()
+	/**
+	 * @dataProvider resultProvider
+	 * @param $term
+	 * @param $expectedCount
+	 */
+	public function testResult($term, $expectedCount)
 	{
 		$em = $this->getPropagatedEM();
 		$qb = $em->createQueryBuilder()
@@ -35,23 +40,23 @@ class EqualFilterImplementationTest extends AbstractDoctrineTest
 			->addFilter(new EqualFilterDefinition('title'));
 
 		$setup->setData([
-			'title' => 'Title1'
+			'title' => $term
 		]);
 
 		$ormDataProvider = new OrmDataProvider(new OrmImplementationList(), clone $qb, new Mapper());
 		$data = $ormDataProvider->fetchData($setup);
 
-		$this->assertCount(1, $data->getResults());
 
-		$this->propagateData($em, [
-			['Title1', 1, \DateTime::createFromFormat('H:i:s', "10:22:00"), new \DateTime('2017-01-22 10:15:00')],
-		]);
-		$setup->setData([
-			'title' => 'Title1'
-		]);
-		$ormDataProvider = new OrmDataProvider(new OrmImplementationList(), clone $qb, new Mapper());
-		$data = $ormDataProvider->fetchData($setup);
-		$this->assertCount(2, $data->getResults());
+		$this->assertEquals($expectedCount, $data->getNbAll());
+		$this->assertCount($expectedCount, $data->getResults());
+	}
+
+	public function resultProvider()
+	{
+		return [
+			['Title2', 1],
+			['Title1', 2]
+		];
 	}
 
 	public function testIsWhereExecuted()

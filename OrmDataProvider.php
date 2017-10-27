@@ -6,6 +6,7 @@ namespace Kora\DataProvider\Doctrine\Orm;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Kora\DataProvider\AbstractDataProvider;
 use Kora\DataProvider\Mapper;
 use Kora\DataProvider\OperatorImplementationsList;
@@ -71,26 +72,12 @@ class OrmDataProvider extends AbstractDataProvider
 		$this->queryBuilder->setMaxResults(null);
 		$this->queryBuilder->setFirstResult(null);
 
-		$sql = $this->queryBuilder->getQuery()->getSQL();
+		$pager = new Paginator($this->queryBuilder->getQuery());
 
 		$this->queryBuilder->setMaxResults($limit);
 		$this->queryBuilder->setFirstResult($offset);
 
-		$stmt = $this->queryBuilder->getEntityManager()->getConnection()->prepare("
-			SELECT COUNT(*) 
-			FROM ($sql) AS counter
-		");
-
-		$parser = new Parser($this->queryBuilder->getQuery());
-		$dqlSqlMapping = $parser->parse()->getParameterMappings();
-
-		foreach ($this->queryBuilder->getParameters()->toArray() as $parameter) {
-			/** @var Parameter $parameter */
-			$stmt->bindValue($dqlSqlMapping[$parameter->getName()][0] + 1, $parameter->getValue(), $parameter->getType());
-		}
-
-		$stmt->execute();
-		return $stmt->fetchColumn();
+		return $pager->count();
 	}
 
 	/**
