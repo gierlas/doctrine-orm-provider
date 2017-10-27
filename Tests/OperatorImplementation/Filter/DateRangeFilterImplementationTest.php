@@ -88,7 +88,7 @@ class DateRangeFilterImplementationTest extends AbstractDoctrineTest
 
 		$expressionBuilder
 			->shouldReceive('gte')
-			->with($paramMapping, $sqlParamMin)
+			->withArgs([$paramMapping, $sqlParamMin])
 			->once();
 
 		$queryBuilder = m::mock(QueryBuilder::class)

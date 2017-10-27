@@ -2,6 +2,7 @@
 
 namespace Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter;
 
+use Doctrine\ORM\QueryBuilder;
 use Kora\DataProvider\DataProviderInterface;
 use Kora\DataProvider\Doctrine\Orm\OrmDataProvider;
 use Kora\DataProvider\OperatorDefinition\Filter\DateRangeDefinition;
@@ -45,18 +46,25 @@ class DateRangeFilterImplementation implements OperatorImplementationInterface
 		$qb = $dataProvider->getQueryBuilder();
 		$param = ':' . $definition->getName();
 
-		if ($definition->getDateStart()) {
-			$qb
-				->andWhere($qb->expr()->gte($field, $param))
-				->setParameter($param, $dateStart);
+
+		$this->applyDate($qb, $field, $param, $this->getComparisonType(true, $definition->hasTimePart()), $dateStart);
+		$this->applyDate($qb, $field, $param, $this->getComparisonType(false, $definition->hasTimePart()), $dateEnd);
+	}
+
+	protected function applyDate(QueryBuilder $qb, string $field, string $paramName, string $type, $date)
+	{
+		if($date === null) {
 			return;
 		}
 
-		if ($definition->getDateEnd()) {
-			$qb
-				->andWhere($qb->expr()->lt($field, $param))
-				->setParameter($param, $dateEnd);
-		}
+		$qb
+			->andWhere($qb->expr()->{$type}($field, $paramName))
+			->setParameter($paramName, $date);
+	}
+
+	protected function getComparisonType(bool $isStart, bool $hasTime)
+	{
+		return $isStart ? 'gte' : ($hasTime ? 'lte' : 'lt');
 	}
 
 	/**
@@ -75,10 +83,10 @@ class DateRangeFilterImplementation implements OperatorImplementationInterface
 
 		if (!$definition->hasTimePart()) {
 			$retDate->setTime(0, 0);
-		}
 
-		if(!$isStart && !$definition->hasTimePart()) {
-			$retDate->modify('+1 day');
+			if(!$isStart) {
+				$retDate->modify('+1 day');
+			}
 		}
 
 		return $retDate;
