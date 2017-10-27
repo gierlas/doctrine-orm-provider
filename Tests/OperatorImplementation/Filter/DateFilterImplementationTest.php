@@ -4,8 +4,11 @@ namespace Kora\DataProvider\Doctrine\Orm\Tests\OperatorImplementation\Filter;
 
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
+use Kora\DataProvider\DataProviderOperatorsSetup;
 use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\DateFilterImplementation;
 use Kora\DataProvider\Doctrine\Orm\OrmDataProvider;
+use Kora\DataProvider\Doctrine\Orm\OrmImplementationList;
+use Kora\DataProvider\Doctrine\Orm\Tests\AbstractDoctrineTest;
 use Kora\DataProvider\Mapper;
 use Kora\DataProvider\OperatorDefinition\Filter\DateFilterDefinition;
 use Kora\DataProvider\OperatorImplementationsList;
@@ -16,9 +19,50 @@ use Mockery as m;
  * Class DateFilterImplementationTest
  * @author Paweł Gierlasiński <pawel@mediamonks.com>
  */
-class DateFilterImplementationTest extends TestCase
+class DateFilterImplementationTest extends AbstractDoctrineTest
 {
 	use m\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
+	/**
+	 * @dataProvider resultProvider
+	 * @param $searchedDate
+	 * @param $format
+	 * @param $hasTime
+	 * @internal param $expectedCount
+	 */
+	public function testResult($searchedDate, $format, $hasTime, $expectedCount)
+	{
+		$em = $this->getPropagatedEM();
+		$qb = $em->createQueryBuilder()
+			->select('f')
+			->from('Test:Foo', 'f');
+
+		$setup = new DataProviderOperatorsSetup();
+		$setup
+			->addFilter((new DateFilterDefinition('createdAt', $format))->setHasTimePart($hasTime));
+
+		$setup->setData([
+			'createdAt' => $searchedDate
+		]);
+
+		$ormDataProvider = new OrmDataProvider(new OrmImplementationList(), clone $qb, new Mapper());
+		$data = $ormDataProvider->fetchData($setup);
+
+
+		$this->assertEquals($expectedCount, $data->getNbAll());
+		$this->assertCount($expectedCount, $data->getResults());
+	}
+
+	public function resultProvider()
+	{
+		return [
+			['2017-01-22', 'Y-m-d', false, 2],
+			[new \DateTime('2017-01-22'), 'Y-m-d', false, 2],
+			[new \DateTime('2017-01-21'), 'Y-m-d', false, 0],
+			[new \DateTime('2017-01-22 10:15:00'), 'Y-m-d H:i:s', true, 1],
+			[new \DateTime('2017-01-22 10:15:01'), 'Y-m-d H:i:s', true, 0]
+		];
+	}
 
 	public function testOnlyDate()
 	{
