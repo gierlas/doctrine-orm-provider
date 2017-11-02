@@ -5,7 +5,7 @@ namespace Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter;
 use Doctrine\ORM\QueryBuilder;
 use Kora\DataProvider\DataProviderInterface;
 use Kora\DataProvider\Doctrine\Orm\OrmDataProvider;
-use Kora\DataProvider\OperatorDefinition\Filter\DateRangeDefinition;
+use Kora\DataProvider\OperatorDefinition\Filter\DateRangeFilterDefinition;
 use Kora\DataProvider\OperatorDefinitionInterface;
 use Kora\DataProvider\OperatorImplementationInterface;
 
@@ -21,7 +21,7 @@ class DateRangeFilterImplementation implements OperatorImplementationInterface
 	 */
 	public function getOperatorDefinitionCode(): string
 	{
-		return DateRangeDefinition::class;
+		return DateRangeFilterDefinition::class;
 	}
 
 	/**
@@ -32,7 +32,7 @@ class DateRangeFilterImplementation implements OperatorImplementationInterface
 	{
 		/**
 		 * @var OrmDataProvider     $dataProvider
-		 * @var DateRangeDefinition $definition
+		 * @var DateRangeFilterDefinition $definition
 		 */
 		$fieldName = $dataProvider->getFieldMapping($definition->getName());
 		$dateStart = $this->prepareDate($definition->getDateStart(), $definition, true);
@@ -53,11 +53,11 @@ class DateRangeFilterImplementation implements OperatorImplementationInterface
 
 	/**
 	 * @param \DateTime|null      $date
-	 * @param DateRangeDefinition $definition
+	 * @param DateRangeFilterDefinition $definition
 	 * @param bool                $isStart
 	 * @return null|\DateTime
 	 */
-	protected function prepareDate($date, DateRangeDefinition $definition, bool $isStart)
+	protected function prepareDate($date, DateRangeFilterDefinition $definition, bool $isStart)
 	{
 		if ($date === null) {
 			return null;
@@ -79,12 +79,12 @@ class DateRangeFilterImplementation implements OperatorImplementationInterface
 	/**
 	 * @param string              $field
 	 * @param OrmDataProvider     $dataProvider
-	 * @param DateRangeDefinition $definition
+	 * @param DateRangeFilterDefinition $definition
 	 * @param \DateTime           $dateStart
 	 * @param \DateTime           $dateEnd
 	 */
 	protected function handleBoth(
-		string $field, OrmDataProvider $dataProvider, DateRangeDefinition $definition,
+		string $field, OrmDataProvider $dataProvider, DateRangeFilterDefinition $definition,
 		\DateTime $dateStart, \DateTime $dateEnd
 	)
 	{

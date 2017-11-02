@@ -10,7 +10,7 @@ use Kora\DataProvider\Doctrine\Orm\OrmDataProvider;
 use Kora\DataProvider\Doctrine\Orm\OrmImplementationList;
 use Kora\DataProvider\Doctrine\Orm\Tests\AbstractDoctrineTest;
 use Kora\DataProvider\Mapper;
-use Kora\DataProvider\OperatorDefinition\Filter\DateRangeDefinition;
+use Kora\DataProvider\OperatorDefinition\Filter\DateRangeFilterDefinition;
 use Kora\DataProvider\OperatorImplementationsList;
 use PHPUnit\Framework\TestCase;
 use Mockery as m;
@@ -41,7 +41,7 @@ class DateRangeFilterImplementationTest extends AbstractDoctrineTest
 
 		$setup = new DataProviderOperatorsSetup();
 		$setup
-			->addFilter((new DateRangeDefinition('createdAt', $format))->setHasTimePart($hasTime));
+			->addFilter((new DateRangeFilterDefinition('createdAt', $format))->setHasTimePart($hasTime));
 
 		$setup->setData([
 			'createdAt' => [
@@ -112,7 +112,7 @@ class DateRangeFilterImplementationTest extends AbstractDoctrineTest
 
 		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, new Mapper([], [ $paramName => $paramMapping ]));
 
-		$filterDefinition = new DateRangeDefinition($paramName);
+		$filterDefinition = new DateRangeFilterDefinition($paramName);
 		$filterDefinition->initData([
 			$paramName => [
 				'start' => $date
@@ -164,7 +164,7 @@ class DateRangeFilterImplementationTest extends AbstractDoctrineTest
 
 		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, new Mapper([], [ $paramName => $paramMapping ]));
 
-		$filterDefinition = new DateRangeDefinition($paramName);
+		$filterDefinition = new DateRangeFilterDefinition($paramName);
 		$filterDefinition->initData([
 			$paramName => [
 				'end' => $date
@@ -226,7 +226,7 @@ class DateRangeFilterImplementationTest extends AbstractDoctrineTest
 
 		$dataProvider = new OrmDataProvider(new OperatorImplementationsList(), $queryBuilder, new Mapper([], [ $paramName => $paramMapping ]));
 
-		$filterDefinition = new DateRangeDefinition($paramName);
+		$filterDefinition = new DateRangeFilterDefinition($paramName);
 		$filterDefinition->initData([
 			$paramName => [
 				'start' => $dateMin,

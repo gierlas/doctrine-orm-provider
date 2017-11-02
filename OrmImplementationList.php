@@ -8,7 +8,7 @@ use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\DateRangeFilter
 use Kora\DataProvider\Doctrine\Orm\OperatorImplementation\Filter\RangeFilterImplementation;
 use Kora\DataProvider\OperatorDefinition\Filter\ChoiceFilterDefinition;
 use Kora\DataProvider\OperatorDefinition\Filter\DateFilterDefinition;
-use Kora\DataProvider\OperatorDefinition\Filter\DateRangeDefinition;
+use Kora\DataProvider\OperatorDefinition\Filter\DateRangeFilterDefinition;
 use Kora\DataProvider\OperatorDefinition\Filter\RangeFilterDefinition;
 use Kora\DataProvider\OperatorImplementation\Filter\CallbackFilterImplementation;
 use Kora\DataProvider\OperatorImplementationsList;
@@ -54,7 +54,7 @@ class OrmImplementationList extends OperatorImplementationsList
 				DateFilterDefinition::class, new DateFilterImplementation()
 			)
 			->addImplementation(
-				DateRangeDefinition::class, new DateRangeFilterImplementation()
+				DateRangeFilterDefinition::class, new DateRangeFilterImplementation()
 			)
 			->addImplementation(
 				CallbackFilterDefinition::class, new CallbackFilterImplementation()
